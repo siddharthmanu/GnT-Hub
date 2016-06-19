@@ -1,0 +1,17 @@
+.list-group-item img {
+	height: auto;
+	width: 31px;
+}
+.navbar-toggle {
+	position: absolute;
+	margin-left: 8px;
+}
+@media (max-width: 768px) {
+	.navbar-brand {
+		width: 100%;
+    	text-align: center;
+	}
+	.navbar-brand img {
+		display: none;
+	}
+}
