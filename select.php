@@ -2,15 +2,33 @@
 	include 'dbconnect.php';
 	$search = $_POST['search'];
 	$keywords = $_POST['keywords'];
+	if(isset($_POST['parameter']))
+		$parameter = $_POST['parameter'];
 	if ($search == 'name')
 	{
-		$query = 'SELECT * FROM members WHERE name LIKE "'.$keywords.'%" OR organisation LIKE "'.$keywords.'%" OR city LIKE "'.$keywords.'%" OR state LIKE "'.$keywords.'%" OR country LIKE "'.$keywords.'%" ORDER BY name';
+		switch($parameter)
+		{
+			case 'c': $query = 'SELECT * FROM members WHERE organisation LIKE "'.$keywords.'%" ORDER BY first_name'; break;
+			case 'l': $query = 'SELECT * FROM members WHERE city LIKE "'.$keywords.'%" OR state LIKE "'.$keywords.'%" OR country LIKE "'.$keywords.'%" ORDER BY first_name'; break;
+			case 'n':	
+			default: $query = 'SELECT * FROM members WHERE first_name LIKE "'.$keywords.'%" OR middle_name LIKE "'.$keywords.'%" OR last_name LIKE "'.$keywords.'%" OR CONCAT(first_name, " ", middle_name) LIKE "'.$keywords.'%" OR CONCAT(middle_name, " ", last_name) LIKE "'.$keywords.'%" OR CONCAT(first_name, " ", last_name) LIKE "'.$keywords.'%" OR CONCAT(first_name, " ", middle_name, " ", last_name) LIKE "'.$keywords.'%" ORDER BY first_name';
+		}
 		$result = mysql_query($query);
 		while ($row = mysql_fetch_object($result)) {
-		    echo "<a id='".$row->roll."' class=\"list-group-item pjax\" href=\"javascript:search_details('".$row->roll."');\">";
-			echo '<img src="images/'.$row->roll.'.jpg" class="img-rounded pull-left"/>';
-			echo '<h4 class="list-group-item-heading">'.$row->name.'</h4>';
-			echo '<p class="list-group-item-text">'.($row->organisation?$row->organisation:'Home').($row->city?' - '.$row->city:'').'</p></a>';
+		    echo '
+			<div class="row contactsrow">
+				<div class="contactlistleft '.$row->roll.'">
+					<a data-title="'.$row->first_name.' '.$row->middle_name.' '.$row->last_name.'" data-lightbox="profilepics" href="images/'.$row->roll.'.jpg">
+						<img src="images/thumbnails/'.$row->roll.'.jpg" class="img-rounded pull-left">
+					</a>
+				</div>
+				<div class="contactlistright">
+					<a id="'.$row->roll.'" class="list-group-item pjax '.$row->roll.'" href="javascript:search_details(\''.$row->roll.'\');">
+						<h4 class="list-group-item-heading">'.$row->first_name.' '.$row->middle_name.' '.$row->last_name.'</h4>
+						<p class="list-group-item-text">'.($row->organisation?$row->organisation:'Home').($row->city?' - '.$row->city:'').'</p>
+					</a>
+				</div>
+			</div>';
 		}
 	}
 	else if ($search == 'details')
@@ -25,9 +43,11 @@
 			</div>
 			<div class="list-group">
 				<div class="list-group-item">
-					<img src="images/'.$row->roll.'.jpg" class="img-rounded pull-left"/>
+					<a href="images/'.$row->roll.'.jpg" data-lightbox="profilepic" data-title="'.$row->first_name.' '.$row->middle_name.' '.$row->last_name.'">
+	                  <img src="images/thumbnails/'.$row->roll.'.jpg" class="img-rounded pull-left"/>
+	                </a>
 					<label>Name</label>
-					<h4 class="list-group-item-heading">'.$row->name.'</h4>
+					<h4 class="list-group-item-heading">'.$row->first_name.' '.$row->middle_name.' '.$row->last_name.'</h4>
 				</div>
 				<div class="list-group-item">
 					<label>Location</label>

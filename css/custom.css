@@ -1,6 +1,83 @@
-.list-group-item img {
-	height: auto;
-	width: 31px;
+.list-group-item img, .contactlistleft img {
+	cursor: -webkit-zoom-in;
+}
+
+a.lb-prev, a.lb-next {
+	opacity: 1 !important;
+}
+
+#contactlist .list-group-item {
+	border: none;
+}
+
+.contactsrow {
+	margin:0;
+}
+
+.contactsrow:hover div, .contactsrow:hover a {
+	color: #555;
+    text-decoration: none;
+    background-color: #f5f5f5;
+}
+
+div.active {
+	background-color: #337ab7 !important;
+}
+
+a.active {
+	background-color: #337ab7 !important;
+	color: #fff !important;
+}
+
+.contactlistleft {
+	float: left;
+	height: 63px;
+	border-top: 1px solid #ddd;
+}
+
+.contactlistleft .active {
+	background-color: #337ab7;
+}
+
+.contactlistleft img {
+	height: 42px;
+	width: 42px;
+	margin-top: 11px;
+	margin-left: 15px;
+}
+
+.contactlistright {
+	margin-left: 57px;
+	border-top: 1px solid #ddd;
+}
+
+.homebody {
+	background-color: black; 
+	height: 100vh;
+	text-align:center;
+	display:table-cell;
+	vertical-align:middle;
+}
+img.welcome {
+	width: 100%;
+}
+p.welcome {
+	font-size: 60px;
+	color: orange;
+}
+.btn-signin {
+	height: 50px;
+	line-height: 50px;
+	width: 150px;
+	margin-top: 30px;
+	font-size: 25px;
+	padding: 0px;
+}
+.marginbot10 {
+	margin-bottom: 10px;
+}
+.marginbot15 {
+	margin-bottom: 15px;
 }
 .navbar-toggle {
 	position: absolute;
