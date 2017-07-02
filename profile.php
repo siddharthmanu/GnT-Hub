@@ -12,7 +12,10 @@
         <div class="panel-heading clearfix">
           <h3 class="panel-title pull-left">Profile Pic</h3>
           <a class="btn btn-primary pull-right visible-xs" data-toggle="modal" data-target="#profileModal">
-            <i class="fa fa-pencil"></i><span>Edit Profile</span>
+            <i class="fa fa-pencil"></i><span>Profile</span>
+          </a>
+          <a class="btn btn-warning pull-right visible-xs" style="margin-right:15px" data-toggle="modal"  data-target="#passwordModal">
+            <i class="fa fa-key"></i><span>Password</span>
           </a>
         </div>
         <div class="panel-body">
@@ -29,6 +32,9 @@
           <h3 class="panel-title pull-left">Profile Details</h3>
           <a class="btn btn-primary pull-right hidden-xs" data-toggle="modal" data-target="#profileModal">
             <i class="fa fa-pencil"></i><span>Edit Profile</span>
+          </a>
+          <a class="btn btn-warning pull-right hidden-xs" style="margin-right:15px" data-toggle="modal"  data-target="#passwordModal">
+            <i class="fa fa-key"></i><span>Change Password</span>
           </a>
         </div>
         <div class="panel-body list-group">
@@ -243,6 +249,57 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="passwordModal" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form class="form-horizontal" id="changePasswordForm">
+        <div class="modal-header">
+          <div class="btn-group pull-left">
+            <button class="btn btn-danger" data-dismiss="modal">
+              <i class="fa fa-times" style="margin: 0;"></i>
+            </button>
+          </div>
+          <div class="btn-group pull-right">
+            <button type="submit" class="btn btn-success">
+              <i class="fa fa-floppy-o" style="margin: 0;"></i>
+            </button>
+          </div>
+          <h3 class="modal-title">Change Password</h3>
+        </div>
+        <div class="modal-body row">
+          <div class="col-xs-10 col-xs-offset-1">
+            <div class="form-group">
+              <label class="col-sm-4 col-xs-12 control-label">Old Password</label>
+              <div class="col-sm-8 col-xs-12">
+                <input type="password" name="oldpassword" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 col-xs-12 control-label">New Password</label>
+              <div class="col-sm-8 col-xs-12">
+                <input type="password" name="newpassword" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="col-xs-6">
+            <button class="btn btn-danger btn-block" data-dismiss="modal">
+              <i class="fa fa-times"></i> Cancel
+            </button>
+          </div>
+          <div class="col-xs-6">
+            <button type="submit" class="btn btn-success btn-block">
+              <i class="fa fa-floppy-o"></i> Save
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
   $("#editProfileForm").submit(function(e) {
     $.ajax({
@@ -251,6 +308,20 @@
       data: $("#editProfileForm").serialize(),
       success: function (data) {
         $('#profileModal').modal('toggle');
+        $('#main').html(data);
+      }
+    });
+    e.preventDefault();
+  });
+</script>
+<script type="text/javascript">
+  $("#changePasswordForm").submit(function(e) {
+    $.ajax({
+      type: "POST",
+      url: "changepassword.php",
+      data: $("#changePasswordForm").serialize(),
+      success: function (data) {
+        $('#passwordModal').modal('toggle');
         $('#main').html(data);
       }
     });

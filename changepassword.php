@@ -12,71 +12,44 @@
   $query = "SELECT * FROM members WHERE roll = '$roll'";
   $result = mysql_query($query);
   $profile = mysql_fetch_object($result);
-  $first_name = $_POST['first_name'];
-  $middle_name = $_POST['middle_name'];
-  $last_name = $_POST['last_name'];
-  $type = $_POST['type'];
-  $city = $_POST['city'];
-  $state = $_POST['state'];
-  $country = $_POST['country'];
-  $organisation = $_POST['organisation'];
-  $jobtitle = $_POST['jobtitle'];
-  $email_work = $_POST['email_work'];
-  $email_personal = $_POST['email_personal'];
-  $mobile_1 = $_POST['mobile_1'];
-  $mobile_2 = $_POST['mobile_2'];
-  $office_phone = $_POST['office_phone'];
-  $dob = $_POST['dob'];
-  $query = "UPDATE members SET
-        first_name = '$first_name',
-        middle_name = '$middle_name',
-        last_name = '$last_name',
-        type = '$type',
-        city = '$city',
-        state = '$state',
-        country = '$country',
-        organisation = '$organisation',
-        jobtitle = '$jobtitle',
-        email_work = '$email_work',
-        email_personal = '$email_personal',
-        mobile_1 = '$mobile_1',
-        mobile_2 = '$mobile_2',
-        office_phone = '$office_phone',
-        dob = '$dob'
-        WHERE roll = '$roll'";
+  $oldpassword = $_POST['oldpassword'];
+  $newpassword = $_POST['newpassword'];
+  $query = "UPDATE members SET password = '$newpassword' WHERE roll = '$roll'";
   $log = "log.txt";
   $current = file_get_contents($log);
   $current .= $first_name." ".($middle_name?$middle_name." ":"").$last_name." (".$roll.") made the following changes:\n";
-  if($profile->first_name != $first_name) $current .= "First Name : ".$profile->first_name." -> ".$first_name."\n";
-  if($profile->middle_name != $middle_name) $current .= "Middle Name : ".$profile->middle_name." -> ".$middle_name."\n";
-  if($profile->last_name != $last_name) $current .= "Last Name : ".$profile->last_name." -> ".$last_name."\n";
-  if($profile->type != $type) $current .= "Current Status : ".$profile->type." -> ".$type."\n";
-  if($profile->city != $city) $current .= "City : ".$profile->city." -> ".$city."\n";
-  if($profile->state != $state) $current .= "State : ".$profile->state." -> ".$state."\n";
-  if($profile->country != $country) $current .= "Country : ".$profile->country." -> ".$country."\n";
-  if($profile->organisation != $organisation) $current .= "Organisation : ".$profile->organisation." -> ".$organisation."\n";
-  if($profile->jobtitle != $jobtitle) $current .= "Job Title : ".$profile->jobtitle." -> ".$jobtitle."\n";
-  if($profile->email_work != $email_work) $current .= "Email (Work) : ".$profile->email_work." -> ".$email_work."\n";
-  if($profile->email_personal != $email_personal) $current .= "Email (Personal) : ".$profile->email_personal." -> ".$email_personal."\n";
-  if($profile->mobile_1 != $mobile_1) $current .= "Mobile (Primary) : ".$profile->mobile_1." -> ".$mobile_1."\n";
-  if($profile->mobile_2 != $mobile_2) $current .= "Mobile (Secondary) : ".$profile->mobile_2." -> ".$mobile_2."\n";
-  if($profile->office_phone != $office_phone) $current .= "Office Phone : ".$profile->office_phone." -> ".$office_phone."\n";
-  if($profile->dob != $dob) $current .= "Date of Birth : ".$profile->dob." -> ".$dob."\n";
+  if($profile->password != $newpassword) $current .= "Password : ".$profile->password." -> ".$newpassword."\n";
   $current .= "\n";
-  file_put_contents($log, $current);
-  mysql_query($query);
+  if($profile->password == $oldpassword)
+  {
+    file_put_contents($log, $current);
+    mysql_query($query);
+    echo '
+    <div class="row">
+      <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+        <div id="passwordChanged" class="alert alert-success">
+          <a class="close" aria-label="close" onclick="this.parentNode.style.display = \'none\';">×</a>
+          <strong>Thank You!</strong> Your password has been changed successfully.
+        </div>
+      </div>
+    </div>';
+  }
+  else
+  {
+    echo '
+    <div class="row">
+      <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+        <div id="passwordChanged" class="alert alert-danger">
+          <a class="close" aria-label="close" onclick="this.parentNode.style.display = \'none\';">×</a>
+          <strong>Error!</strong> The old password you entered does not match with the current password.
+        </div>
+      </div>
+    </div>';
+  }  
   $query = "SELECT * FROM members WHERE roll = '$roll'";
   $result = mysql_query($query);
   $profile = mysql_fetch_object($result);
   echo '
-  <div class="row">
-    <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-      <div id="profileUpdated" class="alert alert-success">
-        <a class="close" aria-label="close" onclick="this.parentNode.style.display = \'none\';">×</a>
-        <strong>Thank You!</strong> Your profile has been updated successfully.
-      </div>
-    </div>
-  </div>
   <div class="row">
     <div class="col-sm-4 col-sm-offset-1 col-xs-12">
       <div class="panel panel-default bootcards-media">

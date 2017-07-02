@@ -9,20 +9,7 @@
                 $person = mysql_fetch_object($result);
                 if(!empty($person))
                 {
-                        if($person->password == NULL)
-                        {
-                                $json = file_get_contents('http://mobile.nitrkl.ac.in/check.php?f1='.$roll.'&f2='.$pass);
-                                $obj = json_decode($json);
-                                if($obj->re=="success")
-                                {
-                                        mysql_query("UPDATE members SET password='$pass' WHERE roll='$roll'");
-                                        $check = true;
-                                }
-                                else
-                                        $check = false;
-                        }
-                        else
-                                $check = ($person->password == $pass);
+                        $check = ($person->password == $pass);
                         if ($check)
                         {
                                 mysql_query("UPDATE members SET last_login=NOW() WHERE roll='$roll'");
